@@ -1,15 +1,14 @@
 package cook;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class IngredientDatabase {
     private List<Ingredient> ingredients;
 
-    public IngredientDatabase() {
-        this.ingredients = new ArrayList<>();  // ArrayListで材料を管理
+    public IngredientDatabase(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
-
+    
     // 材料を追加
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
@@ -37,8 +36,9 @@ public class IngredientDatabase {
         }
     }    
     
-    // 消費期限順に材料をソートするメソッド（現状は数値じゃないからエラー吐いてる）
-    public void sortIngredientsByExpirationDate() {
-        ingredients.sort(Comparator.comparing(Ingredient::getExpirationDate));
-    }
+//    // 消費期限順に材料をソートするメソッド（現状は数値じゃないからエラー吐いてる）
+//    public void sortIngredientsByExpirationDate() {
+//        ingredients.sort(Comparator.comparing(Ingredient::getExpirationDate));
+//    }
 }
+
