@@ -5,9 +5,9 @@ import java.util.*;
 
 public class MenuMatcher {
     private IngredientDatabase ingredientDatabase;
-    private double targetProtein;      // 必要なタンパク質
-    private double targetLipids;       // 必要な脂質
-    private double targetCarbohydrates; // 必要な炭水化物
+    private double targetProtein;      	// 1日に必要なタンパク質
+    private double targetLipids;       	// 1日に必要な脂質
+    private double targetCarbohydrates; // 1日に必要な炭水化物
 
     public MenuMatcher(IngredientDatabase ingredientDatabase, double targetProtein, double targetLipids, double targetCarbohydrates) {
         this.ingredientDatabase = ingredientDatabase;
@@ -21,25 +21,46 @@ public class MenuMatcher {
         Menu optimalMenu = null;
         double maxScore = -Double.MAX_VALUE;
 
-        //メニューの比較
         for (Menu menu : menus) {
+            if (!areIngredientsSufficient(menu)) {
+                System.out.println("メニュー [" + menu.getName() + "] は材料が不足しているためスコア計算をスキップします。");
+                continue;
+            }
+
             double score = calculateMenuScoreBFS(menu);
             System.out.println("メニュー [" + menu.getName() + "] のスコア: " + score);
-
+            // 最適なメニューの更新。最初は-∞からスタートだから最初に作成できるメニューは絶対に作成できる。
             if (score > maxScore) {
                 maxScore = score;
                 optimalMenu = menu;
             }
         }
-        consumeIngredients(optimalMenu);
-        
 
+        //　最適なメニューの表示
         if (optimalMenu != null) {
+            consumeIngredients(optimalMenu);
             System.out.println("\n選ばれた最適なメニュー: " + optimalMenu.getName());
         } else {
             System.out.println("\n最適なメニューは見つかりませんでした。");
         }
         return optimalMenu;
+    }
+
+    // 材料が十分に揃っているか確認
+    private boolean areIngredientsSufficient(Menu menu) {
+        for (Map.Entry<String, Double> entry : menu.getRequiredIngredients().entrySet()) {
+            String ingredientName = entry.getKey();
+            double quantityNeeded = entry.getValue();
+            
+            //材料の確認
+            Ingredient ingredient = ingredientDatabase.findIngredient(ingredientName);
+            if (ingredient == null || ingredient.getQuantity() < quantityNeeded) {
+                System.out.println("材料 [" + ingredientName + "] が不足しています。必要量: " + quantityNeeded +
+                                   ", 在庫: " + (ingredient != null ? ingredient.getQuantity() : 0));
+                return false;
+            }
+        }
+        return true;
     }
     
     // 材料を消費する

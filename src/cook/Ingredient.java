@@ -76,15 +76,10 @@ public class Ingredient{
     // 情報をわかりやすく表示するtoStringメソッド
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", expiryDate='" + expiryDate + '\'' +
-                ", quantity=" + quantity + 
-                ", protein=" + protein +
-                ", lipids=" + lipids +
-                ", Carbohydrates=" + carbohydrates+
-                '}';
+        return String.format("名前: %s, 有効期限: %s, 残量: %.2f g, タンパク質: %.2f g, 脂質: %.2f g, 炭水化物: %.2f g",
+                name, expiryDate, quantity, protein, lipids, carbohydrates);
     }
+
     
     // 賞味期限からコスト
     public int calculateCost(String strDate1) {
