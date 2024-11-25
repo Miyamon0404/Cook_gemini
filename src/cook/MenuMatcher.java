@@ -19,8 +19,9 @@ public class MenuMatcher {
     // 最適なメニューを選択
     public Menu findOptimalMenuBFS(List<Menu> menus) {
         Menu optimalMenu = null;
-        double maxScore = Double.MIN_VALUE;
+        double maxScore = -Double.MAX_VALUE;
 
+        //メニューの比較
         for (Menu menu : menus) {
             double score = calculateMenuScoreBFS(menu);
             System.out.println("メニュー [" + menu.getName() + "] のスコア: " + score);
@@ -30,10 +31,38 @@ public class MenuMatcher {
                 optimalMenu = menu;
             }
         }
+        consumeIngredients(optimalMenu);
+        
 
-        System.out.println("\n選ばれた最適なメニュー: " + (optimalMenu != null ? optimalMenu.getName() : "なし"));
+        if (optimalMenu != null) {
+            System.out.println("\n選ばれた最適なメニュー: " + optimalMenu.getName());
+        } else {
+            System.out.println("\n最適なメニューは見つかりませんでした。");
+        }
         return optimalMenu;
     }
+    
+    // 材料を消費する
+   public void consumeIngredients(Menu menu) {
+        System.out.println("\n--- 材料を消費中 ---");
+        for (Map.Entry<String, Double> entry : menu.getRequiredIngredients().entrySet()) {
+            String ingredientName = entry.getKey();
+            double quantityNeeded = entry.getValue();
+
+            Ingredient ingredient = ingredientDatabase.findIngredient(ingredientName);
+            if (ingredient != null) {
+                if (ingredient.getQuantity() >= quantityNeeded) {
+                    ingredient.setQuantity(ingredient.getQuantity() - quantityNeeded);
+                    System.out.println("材料 [" + ingredientName + "] を " + quantityNeeded + " 消費しました。残り: " + ingredient.getQuantity());
+                } else {
+                    System.out.println("材料 [" + ingredientName + "] が不足しています。必要量: " + quantityNeeded + ", 在庫: " + ingredient.getQuantity());
+                }
+            } else {
+                System.out.println("材料 [" + ingredientName + "] がデータベースに存在しません。");
+            }
+        }
+    }
+    
 
     // 幅優先探索でメニューのスコアを計算
     private double calculateMenuScoreBFS(Menu menu) {
@@ -73,9 +102,9 @@ public class MenuMatcher {
                 // 材料のコストと栄養素を加算
                 double ingredientCost = ingredient.calculateCost(todayDate) * quantityNeeded;
                 totalCost += ingredientCost;
-                totalProtein += ingredient.getProtein() * quantityNeeded;
-                totalLipids += ingredient.getLipids() * quantityNeeded;
-                totalCarbohydrates += ingredient.getCarbohydrates() * quantityNeeded;
+                totalProtein += ingredient.getProtein();
+                totalLipids += ingredient.getLipids();
+                totalCarbohydrates += ingredient.getCarbohydrates();
 
                 visited.add(ingredientName);
 
@@ -83,7 +112,20 @@ public class MenuMatcher {
                 if (visited.containsAll(menu.getRequiredIngredients().keySet())) {
                     // 栄養価の適合スコアを計算
                     double nutritionScore = calculateNutritionScore(totalProtein, totalLipids, totalCarbohydrates);
-                    // スコア = 栄養価スコア - コスト（低コストを重視する場合は重みを調整可能）
+                    
+                    // 詳細な栄養情報を出力
+                    System.out.println("\n--- メニュー [" + menu.getName() + "] の詳細 ---");
+                    System.out.println("総コスト: " + totalCost);
+                    System.out.println("栄養価:");
+                    System.out.println("  - タンパク質: " + totalProtein + "g (目標: " + targetProtein + "g)");
+                    System.out.println("  - 脂質: " + totalLipids + "g (目標: " + targetLipids + "g)");
+                    System.out.println("  - 炭水化物: " + totalCarbohydrates + "g (目標: " + targetCarbohydrates + "g)");
+                    System.out.println("スコア:");
+                    System.out.println("  - タンパク質スコア: " + (1 / (1 + Math.abs(totalProtein - targetProtein))));
+                    System.out.println("  - 脂質スコア: " + (1 / (1 + Math.abs(totalLipids - targetLipids))));
+                    System.out.println("  - 炭水化物スコア: " + (1 / (1 + Math.abs(totalCarbohydrates - targetCarbohydrates))));
+                    System.out.println("  - 合計スコア: " + (nutritionScore - totalCost));
+                    
                     return nutritionScore - totalCost;
                 }
             }
