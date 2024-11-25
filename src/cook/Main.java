@@ -9,10 +9,11 @@ public class Main {
 
         // 食材リストを作成
         List<Ingredient> ingredientList = new ArrayList<>();
-        ingredientList.add(new Ingredient("Tomato", "2024/11/20", 2.5));
-        ingredientList.add(new Ingredient("Chicken Breast", "2024/11/22", 1.0));
-        ingredientList.add(new Ingredient("Rice", "2025/06/01", 5.0));
-        ingredientList.add(new Ingredient("Onion", "2024/11/19", 1.5));
+        ingredientList.add(new Ingredient("Tomato", "2024/11/20", 150, 1.4, 0.3, 6.0));
+        ingredientList.add(new Ingredient("Chicken Breast", "2024/11/22", 150, 31.0, 3.6, 0.0));
+        ingredientList.add(new Ingredient("Rice", "2025/06/01", 500, 7.1, 0.6, 77.0));
+        ingredientList.add(new Ingredient("Onion", "2024/11/19", 150, 1.1, 0.1, 9.3));
+
 
         // 食材データベースを作成
         IngredientDatabase ingredientDatabase = new IngredientDatabase(ingredientList);
@@ -32,8 +33,9 @@ public class Main {
         menus.add(new Menu("Chicken Rice", menu2Ingredients));
 
         // MenuMatcherを使用して最適なメニューを探索
-        MenuMatcher menuMatcher = new MenuMatcher(ingredientDatabase);
-        Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);
+        // 炭水化物→300,脂質→30%(2000kcal * 0.3 / 9(1g=9kcal)),炭水化物→2000 * 0.5 /4
+        MenuMatcher menuMatcher = new MenuMatcher(ingredientDatabase,70,65,300);
+        Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);//最適なメニューの格納
 
         // 結果を表示
         if (optimalMenu != null) {
