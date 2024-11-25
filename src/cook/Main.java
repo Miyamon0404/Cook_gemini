@@ -36,6 +36,6 @@ public class Main {
         // 炭水化物→300,脂質→30%(2000kcal * 0.3 / 9(1g=9kcal)),炭水化物→2000 * 0.5 /4
         MenuMatcher menuMatcher = new MenuMatcher(ingredientDatabase,70,65,300);
         Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);//最適なメニューの格納
-        toString();
+       
     }
 }
