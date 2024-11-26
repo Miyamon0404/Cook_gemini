@@ -8,6 +8,17 @@ public class IngredientDatabase {
     public IngredientDatabase(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+    
+ // 材料を追加
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
+
+    // ゲッター
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+ 
 
     public Ingredient findIngredient(String name) {
         for (Ingredient ingredient : ingredients) {

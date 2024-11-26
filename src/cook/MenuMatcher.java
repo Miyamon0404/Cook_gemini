@@ -29,6 +29,7 @@ public class MenuMatcher {
 
             double score = calculateMenuScoreBFS(menu);
             System.out.println("メニュー [" + menu.getName() + "] のスコア: " + score);
+            System.out.println();
             // 最適なメニューの更新。最初は-∞からスタートだから最初に作成できるメニューは絶対に作成できる。
             if (score > maxScore) {
                 maxScore = score;
