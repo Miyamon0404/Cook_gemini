@@ -10,8 +10,6 @@ public class CookUI {
 	
     public static void main(String[] args) {
 
-        // 現在の日付を設定
-        String todayDate = "2024/11/25"; // yyyy/MM/dd 形式
 
         // 食材リストを作成
         List<Ingredient> ingredientList = new ArrayList<>();
@@ -27,13 +25,13 @@ public class CookUI {
         // メニューリストを作成
         Map<String, Double> menu1Ingredients = new HashMap<>();
         menu1Ingredients.put("Tomato", 100.0);
-        menu1Ingredients.put("Onion", 100.0);
-        menu1Ingredients.put("Rice", 100.0);
+//        menu1Ingredients.put("Onion", 100.0);
+//        menu1Ingredients.put("Rice", 100.0);
 
         Map<String, Double> menu2Ingredients = new HashMap<>();
         menu2Ingredients.put("Chicken Breast", 300.0);
-        menu2Ingredients.put("Rice", 100.0);
-        menu2Ingredients.put("Onion", 200.0);
+//        menu2Ingredients.put("Rice", 100.0);
+//        menu2Ingredients.put("Onion", 200.0);
 
         List<Menu> menus = new ArrayList<>();
         menus.add(new Menu("Tomato Rice", menu1Ingredients));
@@ -113,7 +111,7 @@ public class CookUI {
   		Scanner scan = new Scanner(System.in);
   		System.out.println("材料の情報を入力してください");
   		System.out.println("名前(xxxx):");
-  		String name = scan.next();
+  		String name = scan.nextLine();
   		System.out.println("賞味期限(YYYY/MM/DD):");
   		String expiryDate = scan.next();   	// 賞味期限
   		System.out.println("食材の量(g):");
