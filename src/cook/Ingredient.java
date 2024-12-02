@@ -88,19 +88,4 @@ public class Ingredient{
         LocalDate expiry = LocalDate.parse(this.expiryDate, formatter);
         return (int) ChronoUnit.DAYS.between(today, expiry) < 0 ?  Integer.MAX_VALUE: (int) ChronoUnit.DAYS.between(today, expiry) ;
     }
-//
-//    public static void main(String[] args) {
-//        // 食材リストを作成
-//        ArrayList<Ingredient> ingredients = new ArrayList<>();
-//
-//        // 食材を追加
-//        ingredients.add(new Ingredient("Tomato", "2024-11-20", 2.5));
-//        ingredients.add(new Ingredient("Chicken Breast", "2024-11-22", 1.0));
-//        ingredients.add(new Ingredient("Rice", "2025-06-01", 5.0));
-//
-//        // リストを表示
-//        for (Ingredient ingredient : ingredients) {
-//            System.out.println(ingredient);
-//        }
-//    }
 }

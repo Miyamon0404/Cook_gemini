@@ -5,7 +5,6 @@ public class CookUI {
 	
 	IngredientDatabase ingredientDatabase;
 	MenuMatcher menumatcher;
-//	RecipeDatabase racipedatabase;
 	List<Menu> menus;//Recipedatabaseの代用。メニューのリストを参照。
 	
     public static void main(String[] args) {
@@ -13,14 +12,10 @@ public class CookUI {
 
         // 食材リストを作成
         List<Ingredient> ingredientList = new ArrayList<>();
-//        ingredientList.add(new Ingredient("Tomato", "2024/12/15", 150, 1.4, 0.3, 6.0));
-//        ingredientList.add(new Ingredient("Chicken Breast", "2024/12/30", 150, 31.0, 3.6, 0.0));
-//        ingredientList.add(new Ingredient("Rice", "2025/06/01", 500, 7.1, 0.6, 77.0));
-//        ingredientList.add(new Ingredient("Onion", "2025/01/01", 150, 1.1, 0.1, 9.3));
+
 
         // 食材データベースを作成
         IngredientDatabase ingredientDatabase = new IngredientDatabase(ingredientList);
-//        ingredientDatabase.printDatabase();
         
         // メニューリストを作成
         Map<String, Double> menu1Ingredients = new HashMap<>();
@@ -43,10 +38,6 @@ public class CookUI {
         cookUI.setMenus(menus);
         cookUI.StartMenu();
 
-        // MenuMatcherを使用して最適なメニューを探索
-//        MenuMatcher menuMatcher = new MenuMatcher(ingredientDatabase, 70, 65, 300);
-//        Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);
-//        
         // 最後にデータベースを表示(確認用)
         ingredientDatabase.printDatabase();
     }
@@ -101,7 +92,7 @@ public class CookUI {
   		double lipids = scan.nextDouble();		 	// 脂質の量
   		System.out.println("炭水化物の量(g):");
   	    double carbohydrates= scan.nextDouble();	// 炭水化物の量
-  	    System.out.println("探索を開始します。");
+  	    System.out.println("探索を開始します。\n");
   		this.menumatcher = new MenuMatcher(ingredientDatabase, protein, lipids, carbohydrates);
   		menumatcher.findOptimalMenuBFS(menus);
   	}

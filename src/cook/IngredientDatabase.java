@@ -28,6 +28,10 @@ public class IngredientDatabase {
         }
         return null;
     }
+    
+    public void removeIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
+    }
 
     // データベースの内容を表示するメソッド
     public void printDatabase() {
@@ -37,11 +41,3 @@ public class IngredientDatabase {
         }
     }
 }
-    
-    
-//    // 消費期限順に材料をソートするメソッド（現状は数値じゃないからエラー吐いてる）
-//    public void sortIngredientsByExpirationDate() {
-//        ingredients.sort(Comparator.comparing(Ingredient::getExpirationDate));
-//    }
-
-

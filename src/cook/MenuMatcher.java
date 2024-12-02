@@ -76,6 +76,12 @@ public class MenuMatcher {
                 if (ingredient.getQuantity() >= quantityNeeded) {
                     ingredient.setQuantity(ingredient.getQuantity() - quantityNeeded);
                     System.out.println("材料 [" + ingredientName + "] を " + quantityNeeded + " 消費しました。残り: " + ingredient.getQuantity());
+                    // 残量が0になったらデータベースから削除
+                    // 残量が0になったらデータベースから削除
+                    if (ingredient.getQuantity() <= 0) { // 残量が0以下の場合
+                        ingredientDatabase.removeIngredient(ingredient);
+                        System.out.println("材料 [" + ingredientName + "] の在庫がなくなったため、データベースから削除されました。");
+                    }
                 } else {
                     System.out.println("材料 [" + ingredientName + "] が不足しています。必要量: " + quantityNeeded + ", 在庫: " + ingredient.getQuantity());
                 }
@@ -84,6 +90,7 @@ public class MenuMatcher {
             }
         }
     }
+   
     
 
     // 幅優先探索でメニューのスコアを計算
@@ -122,7 +129,7 @@ public class MenuMatcher {
                 }
 
                 // 材料のコストと栄養素を加算
-                double ingredientCost = ingredient.calculateCost(todayDate) * quantityNeeded;
+                double ingredientCost = ingredient.calculateCost(todayDate);
                 totalCost += ingredientCost;
                 totalProtein += ingredient.getProtein();
                 totalLipids += ingredient.getLipids();
@@ -146,7 +153,7 @@ public class MenuMatcher {
                     System.out.println("  - タンパク質スコア: " + (1 / (1 + Math.abs(totalProtein - targetProtein))));
                     System.out.println("  - 脂質スコア: " + (1 / (1 + Math.abs(totalLipids - targetLipids))));
                     System.out.println("  - 炭水化物スコア: " + (1 / (1 + Math.abs(totalCarbohydrates - targetCarbohydrates))));
-                    System.out.println("  - 合計スコア: " + (nutritionScore - totalCost));
+                    System.out.println("  - 合計スコア: " + -(nutritionScore - totalCost));
                     
                     return nutritionScore - totalCost;
                 }
