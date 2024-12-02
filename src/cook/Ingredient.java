@@ -86,7 +86,7 @@ public class Ingredient{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate today = LocalDate.parse(strDate1, formatter);
         LocalDate expiry = LocalDate.parse(this.expiryDate, formatter);
-        return (int) ChronoUnit.DAYS.between(today, expiry);
+        return (int) ChronoUnit.DAYS.between(today, expiry) < 0 ?  Integer.MAX_VALUE: (int) ChronoUnit.DAYS.between(today, expiry) ;
     }
 //
 //    public static void main(String[] args) {
