@@ -1,5 +1,4 @@
 package cook;
-import java.util.*;
 
 public class Node implements Comparable<Node> {
     private String ingredientName;

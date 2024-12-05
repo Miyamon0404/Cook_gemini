@@ -1,5 +1,4 @@
 package cook;
-import java.util.Comparator;
 import java.util.List;
 
 public class IngredientDatabase {
@@ -40,4 +39,5 @@ public class IngredientDatabase {
             System.out.println(ingredient);
         }
     }
+    
 }

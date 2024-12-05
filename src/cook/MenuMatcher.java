@@ -64,8 +64,8 @@ public class MenuMatcher {
         return true;
     }
     
-    // 材料を消費する
-   public void consumeIngredients(Menu menu) {
+ // 材料を消費する
+    public void consumeIngredients(Menu menu) {
         System.out.println("\n--- 材料を消費中 ---");
         for (Map.Entry<String, Double> entry : menu.getRequiredIngredients().entrySet()) {
             String ingredientName = entry.getKey();
@@ -76,7 +76,6 @@ public class MenuMatcher {
                 if (ingredient.getQuantity() >= quantityNeeded) {
                     ingredient.setQuantity(ingredient.getQuantity() - quantityNeeded);
                     System.out.println("材料 [" + ingredientName + "] を " + quantityNeeded + " 消費しました。残り: " + ingredient.getQuantity());
-                    // 残量が0になったらデータベースから削除
                     // 残量が0になったらデータベースから削除
                     if (ingredient.getQuantity() <= 0) { // 残量が0以下の場合
                         ingredientDatabase.removeIngredient(ingredient);
@@ -90,8 +89,6 @@ public class MenuMatcher {
             }
         }
     }
-   
-    
 
     // 幅優先探索でメニューのスコアを計算
     private double calculateMenuScoreBFS(Menu menu) {

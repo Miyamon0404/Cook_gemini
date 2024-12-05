@@ -1,6 +1,4 @@
 package cook;
-import java.util.*;
-import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -72,6 +70,7 @@ public class Ingredient{
     public void setCarbohydrates(double carbohydrates) {
     	this.carbohydrates = carbohydrates;
     }
+
     
     // 情報をわかりやすく表示するtoStringメソッド
     @Override
