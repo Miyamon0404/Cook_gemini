@@ -120,42 +120,6 @@ public class CookGUI extends JFrame {
         }
     }
 
-//    // 最適メニューを探索する
-//    private void searchOptimalMenu() {
-//        JPanel inputPanel = new JPanel();
-//        inputPanel.setLayout(new GridLayout(3, 2));
-//
-//        JTextField proteinField = new JTextField();
-//        JTextField lipidsField = new JTextField();
-//        JTextField carbohydratesField = new JTextField();
-//
-//        inputPanel.add(new JLabel("タンパク質 (g):"));
-//        inputPanel.add(proteinField);
-//        inputPanel.add(new JLabel("脂質 (g):"));
-//        inputPanel.add(lipidsField);
-//        inputPanel.add(new JLabel("炭水化物 (g):"));
-//        inputPanel.add(carbohydratesField);
-//
-//        int result = JOptionPane.showConfirmDialog(this, inputPanel, "栄養目標を設定", JOptionPane.OK_CANCEL_OPTION);
-//        if (result == JOptionPane.OK_OPTION) {
-//            try {
-//                double protein = Double.parseDouble(proteinField.getText());
-//                double lipids = Double.parseDouble(lipidsField.getText());
-//                double carbohydrates = Double.parseDouble(carbohydratesField.getText());
-//
-//                MenuMatcher menuMatcher = new MenuMatcher(ingredientDatabase, protein, lipids, carbohydrates);
-//                Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);
-//
-//                if (optimalMenu != null) {
-//                    JOptionPane.showMessageDialog(this, "最適なメニュー: " + optimalMenu.getName());
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "最適なメニューは見つかりませんでした。");
-//                }
-//            } catch (Exception ex) {
-//                JOptionPane.showMessageDialog(this, "入力エラー: " + ex.getMessage(), "エラー", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
-//    }
  // 最適なメニューを探索する
     private void searchOptimalMenu() {
         JPanel inputPanel = new JPanel();
@@ -183,7 +147,6 @@ public class CookGUI extends JFrame {
                 Menu optimalMenu = menuMatcher.findOptimalMenuBFS(menus);
 
                 if (optimalMenu != null) {
-                    menuMatcher.consumeIngredients(optimalMenu);
                     updateIngredientTable(tableModel); // テーブルを更新
                     JOptionPane.showMessageDialog(this, "最適なメニュー: " + optimalMenu.getName());
                 } else {
@@ -195,10 +158,11 @@ public class CookGUI extends JFrame {
         }
     }
 
-    // テーブルを更新
     private void updateIngredientTable(DefaultTableModel tableModel) {
         tableModel.setRowCount(0);
+        System.out.println("現在の材料リスト:");
         for (Ingredient ingredient : ingredientDatabase.getIngredients()) {
+            System.out.println(ingredient); // デバッグログ
             tableModel.addRow(new Object[]{
                     ingredient.getName(),
                     ingredient.getExpiryDate(),
@@ -209,6 +173,7 @@ public class CookGUI extends JFrame {
             });
         }
     }
+
 
     // 入力値を数値として検証するメソッド
     private double parseDoubleWithValidation(String value, String fieldName) {

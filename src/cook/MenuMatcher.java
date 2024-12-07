@@ -65,30 +65,46 @@ public class MenuMatcher {
     }
     
  // 材料を消費する
+ // MenuMatcherクラス内のconsumeIngredientsメソッドを確認・修正
+
     public void consumeIngredients(Menu menu) {
-        System.out.println("\n--- 材料を消費中 ---");
-        for (Map.Entry<String, Double> entry : menu.getRequiredIngredients().entrySet()) {
+        Map<String, Double> requiredIngredients = menu.getRequiredIngredients();
+        Set<String> consumedIngredients = new HashSet<>(); // 消費済み材料のトラッキング
+
+        System.out.println("メニュー名: " + menu.getName());
+        System.out.println("必要材料: " + requiredIngredients);
+
+        for (Map.Entry<String, Double> entry : requiredIngredients.entrySet()) {
             String ingredientName = entry.getKey();
-            double quantityNeeded = entry.getValue();
+            double requiredQuantity = entry.getValue();
+
+            // 同じ材料を複数回消費しない
+            if (consumedIngredients.contains(ingredientName)) {
+                System.out.println("材料 [" + ingredientName + "] はすでに消費済み。スキップします。");
+                continue;
+            }
+
+            consumedIngredients.add(ingredientName);
 
             Ingredient ingredient = ingredientDatabase.findIngredient(ingredientName);
             if (ingredient != null) {
-                if (ingredient.getQuantity() >= quantityNeeded) {
-                    ingredient.setQuantity(ingredient.getQuantity() - quantityNeeded);
-                    System.out.println("材料 [" + ingredientName + "] を " + quantityNeeded + " 消費しました。残り: " + ingredient.getQuantity());
-                    // 残量が0になったらデータベースから削除
-                    if (ingredient.getQuantity() <= 0) { // 残量が0以下の場合
-                        ingredientDatabase.removeIngredient(ingredient);
-                        System.out.println("材料 [" + ingredientName + "] の在庫がなくなったため、データベースから削除されました。");
-                    }
+                System.out.println("消費前の [" + ingredientName + "] の残量: " + ingredient.getQuantity());
+                double remainingQuantity = ingredient.getQuantity() - requiredQuantity;
+                System.out.println("必要量: " + requiredQuantity + " -> 消費後の残量: " + (remainingQuantity > 0 ? remainingQuantity : 0));
+
+                // 残量を更新または削除
+                if (remainingQuantity > 0) {
+                    ingredient.setQuantity(remainingQuantity);
                 } else {
-                    System.out.println("材料 [" + ingredientName + "] が不足しています。必要量: " + quantityNeeded + ", 在庫: " + ingredient.getQuantity());
+                    System.out.println("材料 [" + ingredientName + "] が足りなくなったため、データベースから削除されます。");
+                    ingredientDatabase.removeIngredient(ingredient);
                 }
             } else {
-                System.out.println("材料 [" + ingredientName + "] がデータベースに存在しません。");
+                System.out.println("材料 [" + ingredientName + "] がデータベースに見つかりませんでした。");
             }
         }
     }
+
 
     // 幅優先探索でメニューのスコアを計算
     private double calculateMenuScoreBFS(Menu menu) {
@@ -119,6 +135,7 @@ public class MenuMatcher {
                 if (visited.contains(ingredientName)) {
                     continue;
                 }
+                
 
                 Ingredient ingredient = ingredientDatabase.findIngredient(ingredientName);
                 if (ingredient == null || ingredient.getQuantity() < quantityNeeded) {
