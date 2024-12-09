@@ -145,9 +145,9 @@ public class MenuMatcher {
                 // 材料のコストと栄養素を加算
                 double ingredientCost = ingredient.calculateCost(todayDate);
                 totalCost += ingredientCost;
-                totalProtein += ingredient.getProtein();
-                totalLipids += ingredient.getLipids();
-                totalCarbohydrates += ingredient.getCarbohydrates();
+                totalProtein += ingredient.getProtein() * (quantityNeeded/100);
+                totalLipids += ingredient.getLipids() * (quantityNeeded/100);
+                totalCarbohydrates += ingredient.getCarbohydrates() * (quantityNeeded/100);
 
                 visited.add(ingredientName);
 
